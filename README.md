@@ -33,6 +33,11 @@ Swaggerが提供しているツールを以下に示す。
 まずはこの`Swagger Hub`を使ってなれることをオススメしたいのでここからは`Swagger Hub`上での説明になる。
 
 ## Swaggerのプロジェクトを作成する。
+
+ここでは簡単なモックアップサーバーを作るためにまずは`Swagger Hub`でプロジェクトを作成する
+
+### Swagger Hubでプロジェクトの作成
+
 [Build, Collaborate & Integrate APIs \| SwaggerHub](https://app.swaggerhub.com)にアクセスしてログイン後、プロジェクトを作成する。
 
 設定は以下の感じでいいでしょう。
@@ -47,7 +52,7 @@ Auto Mock API   : ON          // APIのモックを作成するか否か
 ちなみに`Template`の種類が豊富で悩むけど、基本的な`CRUD`を作るなら`Simple API`がちょうどいい気がする。
 
 
-## 簡単なYAMLの書き方説明
+### 簡単なYAMLの書き方説明
 
 ```yaml
 
@@ -175,17 +180,38 @@ paths:
 ```
 
 
-## YAMLのダウンロード
+## モックアップサーバーの作成
 
-ドキュメントの作成ができたらエディターの右上にある`Export`> `Download API` > `YAML Resolved`クリックして`YAML`ファイルをダウンロードする
+ここでは前節にて作成したYAMLファイルを元に、`docker`を用いて簡単にモックアップサーバーをビルドする方法について説明する。
+
+### YAMLのダウンロード
+
+ドキュメントの作成ができたらエディターの右上にある`Export`> `Download API` > `YAML Resolved`クリックして`YAML`ファイルの入った`zip`をダウンロードする
+
+### APIソースのビルド
+
+ビルドには[OpenAPI Generator | OpenAPITools](https://github.com/OpenAPITools/openapi-generator#16---docker)を使う。
+Githubでもいいけどちょっと読みにくいので、使い方は[OpenAPI Generator](https://openapi-generator.tech/)の`Try via Docker`をみると分かりやすい。
+
+実際は以下をコピペして使えばいい。
 
 
-
-## APIソースのビルド
-
-```
+```bash
+# Laravelでビルドしたい場合
 GENERATOR=php-laravel
+
+# 以下を実行。\(バックスラッシュ)を消して1行にまとめてもいい。
+docker run --rm -v \
+${PWD}:/local openapitools/openapi-generator-cli generate \
+-i /local/openapi.yaml \
+-g ${GENERATOR} \
+-o /local/out/${GENERATOR}
 ```
+
+これで`out`ディレクトリに`laravel`のプロジェクトが生成されているはず。
+
+## ビルドしたプロジェクトの起動
+
 composerのインストールがされていない場合は以下を実行したのちに、terminalを再起動する。
 
 ```bash
@@ -208,7 +234,7 @@ composer config -g repos.packagist composer https://packagist.jp
 composer global require hirak/prestissimo
 ```
 
-
-[OpenAPI generatorを試してみる - Qiita](https://qiita.com/amuyikam/items/e8a45daae59c68be0fc8)
-
-[Composer](https://getcomposer.org/download/)
+参考文献
+> [OpenAPI generatorを試してみる - Qiita](https://qiita.com/amuyikam/items/e8a45daae59c68be0fc8)
+>
+> [Composer](https://getcomposer.org/download/)
