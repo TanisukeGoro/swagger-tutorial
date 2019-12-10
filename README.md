@@ -112,7 +112,8 @@ components:
 
 ### pathsについて
 
-`YAML`ファイルの`paths`には、`エンドポイント`や`メソッド`・`リクエスト`などAPIの定義を入れ子構造で記述する。
+`YAML`ファイルの`paths`には、`エンドポイント`や`メソッド`・`リクエスト`などAPIの定義を入れ子構造で記述する。  
+詳細は[Paths and Operations \| Swagger](https://swagger.io/docs/specification/paths-and-operations/)を参考にするといい。  
 
 ```yaml
 paths:
